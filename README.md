@@ -6,6 +6,7 @@
 * Davi Nascimento Leao
 * Hilquias Rodrigues de Oliveira
 * Roberto Vítor Lima Gomes Rodrigues
+* Kaique Rangel Da Silva
 
 
 
