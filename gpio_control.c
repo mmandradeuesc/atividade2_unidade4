@@ -110,21 +110,21 @@ int main() {
 
     while (true) {
         comando = getchar();
-        if (comando != PICO_ERROR_TIMEOUT){
+        if (comando != PICO_ERROR_TIMEOUT){ //Entra no loop quando detecta um caractere inserido
             //printf("COMANDO: %c", comando);
-            if (comando == '\r'){
+            if (comando == '\r'){ //\r é o caractere enviado pelo monitor serial do PuTTY no final da palavra
                 palavra[contador] = '\0';
                 //printf("palavra: %s\n", palavra);
-                acionamento(palavra);
-                memset(palavra, 0, sizeof(palavra));
-                contador = 0;
+                acionamento(palavra); // Entra na lógica de que componente ativar (leds ou buzzer)
+                memset(palavra, 0, sizeof(palavra)); //reinicia o buffer de palavra
+                contador = 0; //reinicia o índice
                 
                 // if (comando == 'B') {
                 //     buzzer_play_tone(1000, 2000); // Exemplo: 1kHz por 2 segundos
                 // } else {
                 //     acionar_led(comando);
                 // }
-            } else if ((contador < sizeof(palavra) - 1) && (comando >= 32 && comando <= 126)){
+            } else if ((contador < sizeof(palavra) - 1) && (comando >= 32 && comando <= 126)){ //verifica se o índice está ao final do vetor de caracteres palavra, e se o caractere enviado é um caractere ASCII válido, para capturar mais um caractere e introduzir em palavra
                 palavra[contador++] = comando; 
             }
        }
