@@ -57,6 +57,7 @@ void acionar_led(char comando) {
 }
 
 void acionamento(char* palavra){
+    desligar_leds();
     //printf("entrou: %s\n", palavra);
     if (strcmp(palavra,"SOM") == 0) {
         buzzer_play_tone(1000, 2000); // Exemplo: 1kHz por 2 segundos
