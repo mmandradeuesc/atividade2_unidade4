@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #include "hardware/pwm.h"
@@ -34,11 +35,46 @@ void desligar_leds() {
 void acionar_led(char comando) {
     desligar_leds();
     switch (comando) {
-        case 'V': gpio_put(LED_VERDE_PIN, 1); break;
-        case 'A': gpio_put(LED_AZUL_PIN, 1); break;
-        case 'R': gpio_put(LED_VERMELHO_PIN, 1); break;
-        case 'W': gpio_put(LED_VERMELHO_PIN, 1); gpio_put(LED_VERDE_PIN, 1); gpio_put(LED_AZUL_PIN, 1); break;
-        case 'D': default: desligar_leds(); break;
+        case 'V': 
+            gpio_put(LED_VERDE_PIN, 1); 
+            break;
+        case 'A': 
+            gpio_put(LED_AZUL_PIN, 1); 
+            break;
+        case 'R': 
+            gpio_put(LED_VERMELHO_PIN, 1); 
+            break;
+        case 'W': 
+            gpio_put(LED_VERMELHO_PIN, 1); 
+            gpio_put(LED_VERDE_PIN, 1); 
+            gpio_put(LED_AZUL_PIN, 1); 
+            break;
+        //case 'D':  desnecessário, default pega tudo; você pretende fazer algo diferente aqui?
+        default: 
+            desligar_leds(); 
+            break;
+    }
+}
+
+void acionamento(char* palavra){
+    //printf("entrou: %s\n", palavra);
+    if (strcmp(palavra,"SOM") == 0) {
+        buzzer_play_tone(1000, 2000); // Exemplo: 1kHz por 2 segundos
+    } else if (strcmp(palavra,"VERDE") == 0){
+        //printf("ENTROU NO VERDE");
+        gpio_put(LED_VERDE_PIN, 1);
+    } else if (strcmp(palavra,"AZUL") == 0){
+        //printf("ENTROU NO AZUL");
+        gpio_put(LED_AZUL_PIN, 1);
+    } else if (strcmp(palavra,"VERMELHO") == 0){
+        //printf("ENTROU NO VERMELHO");
+        gpio_put(LED_VERMELHO_PIN, 1);
+    } else if (strcmp(palavra,"RGB\r") == 0){
+        gpio_put(LED_VERMELHO_PIN, 1); 
+        gpio_put(LED_VERDE_PIN, 1); 
+        gpio_put(LED_AZUL_PIN, 1);
+    } else {
+        desligar_leds();
     }
 }
 
@@ -68,14 +104,30 @@ int main() {
     pwm_set_clkdiv(slice_num, current_clkdiv);
     pwm_set_wrap(slice_num, current_wrap);
     pwm_set_enabled(slice_num, true);
+    char comando;
+    char palavra[50];
+    uint8_t contador = 0;
 
     while (true) {
-        char comando = getchar();
-        if (comando == 'B') {
-            buzzer_play_tone(1000, 2000); // Exemplo: 1kHz por 2 segundos
-        } else {
-            acionar_led(comando);
-        }
+        comando = getchar();
+        if (comando != PICO_ERROR_TIMEOUT){
+            //printf("COMANDO: %c", comando);
+            if (comando == '\r'){
+                palavra[contador] = '\0';
+                //printf("palavra: %s\n", palavra);
+                acionamento(palavra);
+                memset(palavra, 0, sizeof(palavra));
+                contador = 0;
+                
+                // if (comando == 'B') {
+                //     buzzer_play_tone(1000, 2000); // Exemplo: 1kHz por 2 segundos
+                // } else {
+                //     acionar_led(comando);
+                // }
+            } else if ((contador < sizeof(palavra) - 1) && (comando >= 32 && comando <= 126)){
+                palavra[contador++] = comando; 
+            }
+       }
     }
     return 0;
 }
