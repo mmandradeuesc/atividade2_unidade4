@@ -69,7 +69,7 @@ void acionamento(char* palavra){
     } else if (strcmp(palavra,"VERMELHO") == 0){
         //printf("ENTROU NO VERMELHO");
         gpio_put(LED_VERMELHO_PIN, 1);
-    } else if (strcmp(palavra,"RGB\r") == 0){
+    } else if (strcmp(palavra,"RGB") == 0){
         gpio_put(LED_VERMELHO_PIN, 1); 
         gpio_put(LED_VERDE_PIN, 1); 
         gpio_put(LED_AZUL_PIN, 1);
