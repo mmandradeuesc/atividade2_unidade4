@@ -45,18 +45,12 @@ pico_enable_stdio_uart(gpio_control 1)
 pico_enable_stdio_usb(gpio_control 1)
 
 # Add the standard library to the build
-target_link_libraries(gpio_control
-        pico_stdlib)
+target_link_libraries(gpio_control pico_stdlib hardware_pwm)
 
 # Add the standard include files to the build
 target_include_directories(gpio_control PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}
 )
-
-# Add any user requested libraries
-target_link_libraries(gpio_control 
-        
-        )
 
 pico_add_extra_outputs(gpio_control)
 
