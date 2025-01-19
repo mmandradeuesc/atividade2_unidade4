@@ -5,6 +5,7 @@
 * Marcel Mascarenhas Andrade
 * Davi Nascimento Leao
 * Hilquias Rodrigues de Oliveira
+* Kaique Rangel Da Silva
 
 
 
